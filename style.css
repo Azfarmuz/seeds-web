@@ -1,0 +1,715 @@
+*{box-sizing:border-box}
+
+:root{
+  --ink:#302f2a;
+  --paper:#f4f0e5;
+  --night:#081425;
+  --morning:#cfd8d0;
+  --sea:#9fc6cf;
+  --day:#d9d6bb;
+  --sunset:#d69a78;
+  --tree:#cbd4b4;
+}
+
+html{scroll-behavior:smooth;background:var(--night)}
+body{
+  margin:0;
+  overflow-x:hidden;
+  color:var(--ink);
+  font-family:"DM Sans",sans-serif;
+  background:transparent;
+}
+
+/* =========================
+   CONTINUOUS BACKGROUND
+   ========================= */
+.world{
+  position:fixed;
+  inset:0;
+  z-index:-5;
+  overflow:hidden;
+  background:var(--night);
+  isolation:isolate;
+}
+.atmo{
+  position:absolute;
+  inset:-8%;
+  opacity:0;
+  transition:none;
+  will-change:opacity,transform;
+}
+.atmo-night{
+  opacity:1;
+  background:
+    radial-gradient(ellipse at 50% 88%,rgba(70,104,125,.24),transparent 42%),
+    linear-gradient(180deg,#071222 0%,#0b1a2d 48%,#10263a 100%);
+}
+.atmo-morning{
+  background:
+    radial-gradient(ellipse at 50% 70%,rgba(255,236,188,.60),transparent 40%),
+    linear-gradient(180deg,#667e91 0%,#b6c4c1 46%,#e1dfcd 100%);
+}
+.atmo-day{
+  background:
+    radial-gradient(ellipse at 72% 24%,rgba(255,244,201,.78),transparent 18%),
+    linear-gradient(180deg,#9ec1ce 0%,#cbd9d0 46%,#dfe0c9 100%);
+}
+.atmo-windmill{
+  background:
+    radial-gradient(ellipse at 68% 18%,rgba(255,231,183,.70),transparent 22%),
+    linear-gradient(180deg,#b9c9c7 0%,#e4dfc5 55%,#d4bd94 100%);
+}
+.atmo-sunset{
+  background:
+    radial-gradient(circle at 73% 29%,rgba(255,226,145,.98),transparent 12%),
+    radial-gradient(ellipse at 50% 80%,rgba(221,111,77,.35),transparent 45%),
+    linear-gradient(180deg,#8c8191 0%,#d29b86 45%,#e8b47c 76%,#bf806e 100%);
+}
+.atmo-tree{
+  background:
+    radial-gradient(ellipse at 50% 40%,rgba(250,244,211,.55),transparent 40%),
+    linear-gradient(180deg,#b5c6b2 0%,#d9d9bd 55%,#b6bf9d 100%);
+}
+
+.stars{
+  position:absolute;
+  inset:0;
+  opacity:1;
+  will-change:opacity;
+  background-image:
+   radial-gradient(circle at 7% 12%,#fff7d5 0 1.4px,transparent 1.8px),
+   radial-gradient(circle at 18% 27%,#fff7d5 0 1px,transparent 1.5px),
+   radial-gradient(circle at 31% 10%,#fff7d5 0 1.3px,transparent 1.7px),
+   radial-gradient(circle at 44% 22%,#fff7d5 0 1px,transparent 1.5px),
+   radial-gradient(circle at 57% 8%,#fff7d5 0 1.5px,transparent 2px),
+   radial-gradient(circle at 68% 31%,#fff7d5 0 1px,transparent 1.5px),
+   radial-gradient(circle at 78% 14%,#fff7d5 0 1.2px,transparent 1.7px),
+   radial-gradient(circle at 91% 25%,#fff7d5 0 1.3px,transparent 1.8px),
+   radial-gradient(circle at 84% 49%,#fff7d5 0 1px,transparent 1.5px),
+   radial-gradient(circle at 12% 62%,#fff7d5 0 1px,transparent 1.5px),
+   radial-gradient(circle at 51% 55%,#fff7d5 0 1px,transparent 1.5px),
+   radial-gradient(circle at 72% 72%,#fff7d5 0 1.2px,transparent 1.7px);
+}
+.moon{
+  position:absolute;
+  width:90px;height:90px;
+  right:12vw;top:11vh;
+  border-radius:50%;
+  background:#f7d78a;
+  box-shadow:0 0 45px rgba(247,215,138,.18);
+  will-change:opacity,transform;
+}
+.moon:after{
+  content:"";
+  position:absolute;
+  width:92px;height:92px;
+  left:28px;top:-10px;
+  border-radius:50%;
+  background:#0b1a2d;
+}
+.sun{
+  position:absolute;
+  width:105px;height:105px;
+  right:15vw;top:17vh;
+  border-radius:50%;
+  background:#ffd38a;
+  box-shadow:0 0 70px rgba(255,194,105,.34);
+  opacity:0;
+  will-change:opacity,transform;
+}
+.cloud{
+  position:absolute;
+  width:230px;height:52px;
+  border-radius:50%;
+  background:rgba(247,245,231,.32);
+  filter:blur(7px);
+  opacity:0;
+  will-change:opacity,transform;
+}
+.cloud:before,.cloud:after{
+  content:"";position:absolute;border-radius:50%;background:inherit;
+}
+.cloud:before{width:95px;height:75px;left:38px;bottom:2px}
+.cloud:after{width:120px;height:65px;right:22px;bottom:0}
+.cloud-a{left:7vw;top:21vh}
+.cloud-b{right:3vw;top:35vh;transform:scale(.78)}
+.warm-glow{
+  position:absolute;
+  left:-15%;right:-15%;bottom:-34%;
+  height:75%;
+  border-radius:50%;
+  background:radial-gradient(ellipse at center,rgba(255,188,112,.42),transparent 65%);
+  opacity:0;
+  will-change:opacity;
+}
+
+
+/* Mobile performance: keep off-screen scenes cheap to paint. */
+.story-section{content-visibility:auto;contain-intrinsic-size:100vh;}
+.world{pointer-events:none;}
+
+/* =========================
+   LAYOUT / TYPE
+   ========================= */
+.story-section{
+  position:relative;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+}
+.content{
+  width:min(1180px,88vw);
+  margin:auto;
+  position:relative;
+}
+.scene-content{padding:7vh 0}
+.hero{padding-top:6vh}
+.eyebrow{
+  font-size:.72rem;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:rgba(255,247,220,.78);
+  margin-bottom:1.4rem;
+}
+h1,h2{
+  margin:0;
+  font-family:"Caveat",cursive;
+  font-weight:500;
+  line-height:.92;
+}
+h1{color:#fff8df;font-size:clamp(4rem,8.5vw,8.5rem);max-width:900px}
+h1 em,h2 em{font-weight:400}
+.intro{
+  margin:2rem 0 0;
+  color:rgba(255,249,232,.84);
+  font-size:clamp(1rem,1.4vw,1.25rem);
+  line-height:1.7;
+  font-weight:300;
+}
+.scene-copy{
+  color:rgba(49,53,48,.70);
+  font-size:clamp(1rem,1.35vw,1.2rem);
+  line-height:1.7;
+  margin:1.2rem 0 0;
+}
+.scene-morning,.scene-sea,.scene-windmill,.scene-sunset,.scene-tree{
+  color:#343830;
+}
+.scene-morning h2,.scene-sea h2,.scene-windmill h2,.scene-sunset h2,.scene-tree h2{
+  color:#3d4038;
+  font-size:clamp(3.5rem,7vw,7rem);
+}
+.scene-morning .eyebrow,.scene-sea .eyebrow,.scene-windmill .eyebrow,.scene-sunset .eyebrow,.scene-tree .eyebrow{
+  color:rgba(55,60,53,.62);
+}
+
+/* =========================
+   01 CAMP
+   ========================= */
+.camp-scene{
+  position:relative;
+  width:min(1000px,94vw);
+  margin:-1vh auto 0;
+  transform:translateY(3vh);
+}
+.camp-scene>img{
+  display:block;
+  width:100%;
+  height:auto;
+  filter:drop-shadow(0 28px 35px rgba(0,0,0,.18));
+  animation:float 7s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+
+.fire-hotspot{
+  position:absolute;left:36.5%;top:64%;width:15%;height:25%;
+  padding:0;border:0;background:transparent;cursor:pointer;
+  appearance:none;-webkit-tap-highlight-color:transparent;outline:none;
+}
+.fire-hotspot:focus-visible{box-shadow:0 0 0 3px rgba(255,220,150,.45);border-radius:50%}
+.fire-glow{
+  position:absolute;left:50%;bottom:18%;width:70%;aspect-ratio:1;
+  transform:translateX(-50%) scale(.75);border-radius:50%;
+  background:radial-gradient(circle,rgba(255,210,120,.48) 0%,rgba(255,160,70,.20) 30%,rgba(255,120,40,0) 72%);
+  opacity:0;transition:opacity .35s ease,transform .35s ease;
+  filter:blur(2px);pointer-events:none;
+}
+.flame{
+  position:absolute;left:50%;bottom:24%;width:22%;height:34%;
+  border-radius:55% 45% 55% 45%;
+  background:linear-gradient(to top,#e87527,#ffd66f);
+  transform:translateX(-50%) rotate(0deg) scale(.4);
+  opacity:0;filter:blur(.25px);transform-origin:50% 100%;pointer-events:none;
+}
+.flame-a{animation:flameA .62s ease-in-out infinite alternate}
+.flame-b{width:14%;height:25%;bottom:25%;background:#fff0a5;animation:flameB .48s ease-in-out infinite alternate-reverse}
+@keyframes flameA{from{transform:translateX(-50%) rotate(-5deg) scale(.9)}to{transform:translateX(-50%) rotate(6deg) scale(1.08,.94)}}
+@keyframes flameB{from{transform:translateX(-50%) rotate(5deg) scale(.82)}to{transform:translateX(-50%) rotate(-6deg) scale(1.08,.9)}}
+.ember{position:absolute;left:50%;bottom:38%;width:4px;height:4px;border-radius:50%;background:#ffd37a;opacity:0;pointer-events:none}
+.ember-1{--x:-18px;--delay:0s;--rise:35px}.ember-2{--x:8px;--delay:.18s;--rise:45px}.ember-3{--x:22px;--delay:.34s;--rise:28px}.ember-4{--x:-4px;--delay:.52s;--rise:55px}
+.fire-hotspot.active .fire-glow{opacity:1;transform:translateX(-50%) scale(1.15);animation:glowPulse 1.05s ease-in-out infinite alternate}
+.fire-hotspot.active .flame{opacity:1}.fire-hotspot.active .ember{animation:emberFly 1.4s var(--delay) ease-out infinite}
+@keyframes glowPulse{from{filter:blur(3px);opacity:.7}to{filter:blur(7px);opacity:1}}
+@keyframes emberFly{0%{opacity:0;transform:translate(var(--x),0) scale(.7)}15%{opacity:1}100%{opacity:0;transform:translate(calc(var(--x) + 5px),calc(var(--rise) * -1)) scale(.15)}}
+
+/* =========================
+   02 MORNING
+   ========================= */
+.morning-content{text-align:center}
+.mountain-scene{
+  position:relative;
+  width:min(1050px,96vw);
+  margin:2vh auto 0;
+  min-height:54vh;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+}
+.mountain-art{
+  width:min(900px,90vw);
+  max-height:58vh;
+  object-fit:contain;
+  display:block;
+  filter:drop-shadow(0 20px 24px rgba(45,55,45,.12));
+  animation:mountainBreath 9s ease-in-out infinite;
+}
+@keyframes mountainBreath{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.bird-hotspot{
+  position:absolute;right:13%;top:25%;width:150px;height:120px;
+  padding:0;border:0;background:transparent;cursor:pointer;
+  appearance:none;outline:none;z-index:3;
+}
+.bird-hotspot img{
+  width:100%;height:100%;object-fit:contain;display:block;
+  filter:drop-shadow(0 9px 9px rgba(30,50,25,.12));
+  transform-origin:60% 80%;
+}
+.bird-hotspot:focus-visible{box-shadow:0 0 0 3px rgba(70,95,70,.35);border-radius:50%}
+.bird-hotspot.peck img{animation:birdPeck .72s cubic-bezier(.25,.8,.25,1) both}
+@keyframes birdPeck{0%{transform:rotate(0) translateY(0)}18%{transform:rotate(-4deg) translateY(2px)}38%{transform:rotate(7deg) translateY(13px) scale(.98,1.02)}58%{transform:rotate(-3deg) translateY(-2px)}78%{transform:rotate(2deg) translateY(1px)}100%{transform:rotate(0) translateY(0)}}
+.bird-sound{
+  position:absolute;right:3%;top:18%;
+  display:flex;gap:.15em;font-family:"Caveat",cursive;
+  font-size:2rem;color:#454b42;opacity:0;pointer-events:none;
+  transform:translateY(10px) scale(.9) rotate(-5deg);
+}
+.bird-sound span:nth-child(2){margin-top:-.25em}.bird-sound span:nth-child(3){margin-top:.25em}
+.bird-sound.show{animation:chirp .95s ease-out both}
+@keyframes chirp{0%{opacity:0;transform:translate(-4px,10px) scale(.8) rotate(-8deg)}20%{opacity:1}65%{opacity:1;transform:translate(0,-8px) scale(1.08) rotate(3deg)}100%{opacity:0;transform:translate(12px,-28px) scale(.95) rotate(7deg)}}
+.orangutan-art{
+  position:absolute;
+  left:6%;bottom:3%;
+  width:180px;height:210px;
+  object-fit:contain;
+  filter:drop-shadow(0 12px 12px rgba(35,45,30,.13));
+  animation:orangutanFloat 5.5s ease-in-out infinite;
+}
+@keyframes orangutanFloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-6px) rotate(1deg)}}
+
+/* =========================
+   03 SEA / LIGHTHOUSE
+   ========================= */
+.sea-content{text-align:center}
+.sea-stage{
+  width:min(1000px,94vw);
+  margin:2vh auto 0;
+  min-height:58vh;
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+}
+.sea-stage img{
+  width:min(930px,92vw);
+  max-height:64vh;
+  object-fit:contain;
+  display:block;
+  filter:drop-shadow(0 24px 28px rgba(35,60,65,.13));
+  animation:seaBreathe 10s ease-in-out infinite;
+}
+@keyframes seaBreathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-4px) scale(1.008)}}
+
+/* =========================
+   04 WINDMILL
+   ========================= */
+.windmill-content{text-align:center}
+.windmill-stage{
+  position:relative;
+  width:min(1050px,96vw);
+  margin:1vh auto 0;
+  min-height:60vh;
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+}
+.windmill-art{
+  width:min(850px,86vw);
+  max-height:62vh;
+  object-fit:contain;
+  display:block;
+  filter:drop-shadow(0 20px 22px rgba(50,45,40,.12));
+  animation:windmillFloat 8s ease-in-out infinite;
+}
+@keyframes windmillFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.children-art{
+  position:absolute;
+  left:7%;bottom:7%;
+  width:min(500px,46vw);
+  max-height:180px;
+  object-fit:contain;
+  filter:drop-shadow(0 10px 10px rgba(50,45,40,.10));
+}
+.falling-leaf{
+  position:absolute;
+  width:52px;height:52px;
+  object-fit:contain;
+  opacity:.82;
+  pointer-events:none;
+  animation:leafFall 6s linear infinite;
+}
+.leaf-1{left:15%;top:8%;animation-delay:-1s}.leaf-2{right:14%;top:4%;width:42px;height:42px;animation-delay:-3.4s}.leaf-3{right:28%;top:17%;width:36px;height:36px;animation-delay:-5s}
+@keyframes leafFall{
+  0%{transform:translate3d(0,-20px,0) rotate(0deg);opacity:0}
+  12%{opacity:.8}
+  55%{transform:translate3d(75px,220px,0) rotate(150deg)}
+  100%{transform:translate3d(-15px,450px,0) rotate(320deg);opacity:0}
+}
+
+/* =========================
+   05 SUNSET / HOUSE
+   ========================= */
+.sunset-content{text-align:center}
+.sunset-stage{
+  width:min(1000px,94vw);
+  margin:1vh auto 0;
+  min-height:58vh;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+}
+.sunset-stage img{
+  width:min(900px,90vw);
+  max-height:63vh;
+  object-fit:contain;
+  display:block;
+  filter:drop-shadow(0 22px 26px rgba(70,45,40,.18));
+  animation:houseFloat 9s ease-in-out infinite;
+}
+@keyframes houseFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+
+/* =========================
+   06 TREE
+   ========================= */
+.tree-content{text-align:center}
+.tree-stage{
+  width:min(850px,84vw);
+  margin:1vh auto 0;
+  min-height:58vh;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+}
+.tree-stage img{
+  width:min(500px,52vw);
+  max-height:68vh;
+  object-fit:contain;
+  display:block;
+  filter:drop-shadow(0 24px 25px rgba(50,55,35,.16));
+  animation:treeSway 8s ease-in-out infinite;
+  transform-origin:50% 100%;
+  position:relative;
+  z-index:2;
+}
+@keyframes treeSway{0%,100%{transform:rotate(-.5deg) translateY(0)}50%{transform:rotate(.7deg) translateY(-3px)}}
+
+@media(max-width:700px){
+  .scene-content{padding:4vh 0}
+  .content{width:min(94vw,1180px)}
+  .camp-scene>img,.mountain-art,.sea-stage img,.windmill-art,.sunset-stage img,.tree-stage img{filter:drop-shadow(0 12px 16px rgba(0,0,0,.12))}
+  .hero{padding-top:3vh}
+  .camp-scene{width:100%;margin-top:3vh}
+  .bird-hotspot{right:4%;top:24%;width:105px;height:90px}
+  .bird-sound{right:0;top:15%;font-size:1.65rem}
+  .mountain-scene{min-height:44vh}
+  .orangutan-art{left:0;bottom:2%;width:115px;height:145px}
+  .children-art{left:2%;width:52vw;bottom:5%}
+  .falling-leaf{width:36px;height:36px}
+  .tree-stage img{width:68vw}
+}
+
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .camp-scene>img,.mountain-art,.orangutan-art,.sea-stage img,.windmill-art,.sunset-stage img,.tree-stage img,.falling-leaf{animation:none}
+  .fire-hotspot.active .ember{animation:none}
+}
+
+
+/* =========================
+   INTERACTIVE STORY UPDATES
+   ========================= */
+
+/* A little more contrast for the new English copy. */
+.intro{
+  color:rgba(255,250,232,.92);
+  text-shadow:0 2px 18px rgba(0,0,0,.18);
+}
+.morning-intro{
+  color:rgba(47,55,49,.82);
+  font-size:clamp(1rem,1.35vw,1.2rem);
+  line-height:1.7;
+  margin:1.2rem 0 0;
+}
+
+/* 01 · Dinosaur — separate, clickable, grow/shrink. */
+.dino-hotspot{
+  position:absolute;
+  right:7%;
+  bottom:3%;
+  width:18%;
+  min-width:105px;
+  max-width:190px;
+  aspect-ratio:1.18/1;
+  padding:0;
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  appearance:none;
+  outline:none;
+  z-index:5;
+  -webkit-tap-highlight-color:transparent;
+}
+.dino-hotspot img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+  transform-origin:65% 90%;
+  filter:drop-shadow(0 10px 9px rgba(20,35,20,.18));
+  transition:transform .7s cubic-bezier(.22,1,.36,1),filter .7s ease;
+}
+.dino-hotspot:hover img{
+  transform:translateY(-3px) rotate(-1deg);
+}
+.dino-hotspot.big img{
+  transform:scale(3.25) translate(-8%,-8%) rotate(-2deg);
+  filter:drop-shadow(0 18px 14px rgba(20,35,20,.22));
+}
+.dino-hotspot:focus-visible{
+  box-shadow:0 0 0 3px rgba(255,220,150,.45);
+  border-radius:50%;
+}
+
+/* Shift the campfire interaction slightly left so the flame sits on the drawn fire. */
+.fire-hotspot{
+  left:36.5%;
+  top:64%;
+}
+
+/* 02 · Orangutan — the same little friend runs off the left edge. */
+.orangutan-hotspot{
+  position:absolute;
+  left:5%;
+  bottom:3%;
+  width:180px;
+  height:210px;
+  padding:0;
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  appearance:none;
+  outline:none;
+  z-index:4;
+  -webkit-tap-highlight-color:transparent;
+}
+.orangutan-hotspot .orangutan-art{
+  position:relative;
+  left:auto;
+  bottom:auto;
+  width:100%;
+  height:100%;
+}
+.orangutan-hotspot.running{
+  pointer-events:none;
+  animation:orangutanRunAway 1.25s cubic-bezier(.55,.05,.9,.35) forwards;
+}
+.orangutan-hotspot.running .orangutan-art{
+  animation:none;
+}
+@keyframes orangutanRunAway{
+  0%{transform:translateX(0) rotate(0) scale(1);opacity:1}
+  35%{transform:translateX(-16vw) rotate(-8deg) scale(.94);opacity:1}
+  100%{transform:translateX(-115vw) rotate(-18deg) scale(.72);opacity:0}
+}
+
+/* 03 · Pufferfish — starts below the boat, then dives; sea calls it back elsewhere. */
+.sea-stage{position:relative}
+.fish-hotspot{
+  position:absolute;
+  left:72%;
+  bottom:18%;
+  width:110px;
+  height:78px;
+  padding:0;
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  appearance:none;
+  outline:none;
+  z-index:4;
+  -webkit-tap-highlight-color:transparent;
+}
+.fish-hotspot img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+  filter:drop-shadow(0 7px 7px rgba(35,60,65,.16));
+  transform:rotate(-5deg);
+  transition:transform .3s ease;
+}
+.fish-hotspot:hover img{transform:translateY(-3px) rotate(-5deg)}
+.fish-hotspot.diving{
+  pointer-events:none;
+  animation:fishDive 1.2s cubic-bezier(.4,0,.9,.25) forwards;
+}
+@keyframes fishDive{
+  0%{transform:translate(0,0) rotate(0) scale(1);opacity:1}
+  45%{transform:translate(20px,25px) rotate(10deg) scale(.9);opacity:.9}
+  100%{transform:translate(75px,145px) rotate(25deg) scale(.35);opacity:0}
+}
+.sea-hotspot{
+  position:absolute;
+  left:0;
+  bottom:5%;
+  width:100%;
+  height:45%;
+  padding:0;
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  appearance:none;
+  outline:none;
+  z-index:3;
+  pointer-events:none;
+}
+.sea-hotspot span{
+  position:absolute;
+  left:50%;
+  top:48%;
+  transform:translate(-50%,-50%) scale(.7);
+  opacity:0;
+  font-size:2.2rem;
+  filter:drop-shadow(0 3px 5px rgba(20,70,100,.18));
+  transition:opacity .3s ease,transform .3s ease;
+}
+.sea-hotspot.ready{
+  pointer-events:auto;
+}
+.sea-hotspot.ready span{
+  opacity:.18;
+  transform:translate(-50%,-50%) scale(1);
+}
+.sea-hotspot.ready:hover span{
+  opacity:.35;
+  transform:translate(-50%,-50%) scale(1.08);
+}
+.fish-return{
+  position:absolute;
+  left:72%;
+  bottom:18%;
+  width:110px;
+  height:78px;
+  opacity:0;
+  pointer-events:none;
+  z-index:4;
+  border:0;
+  padding:0;
+  background:transparent;
+  cursor:pointer;
+}
+.fish-return img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+  transform:rotate(8deg);
+}
+.fish-return.show{
+  pointer-events:auto;
+  animation:fishSurface 1s cubic-bezier(.2,.8,.2,1) both;
+}
+@keyframes fishSurface{
+  0%{opacity:0;transform:translateY(55px) scale(.35) rotate(15deg)}
+  55%{opacity:1;transform:translateY(-10px) scale(1.05) rotate(-4deg)}
+  100%{opacity:1;transform:translateY(0) scale(1) rotate(8deg)}
+}
+
+/* 06 · Tree — click the tree and our runaway friend returns. */
+.tree-stage{position:relative}
+.tree-hotspot{
+  position:absolute;
+  left:27%;
+  bottom:7%;
+  width:48%;
+  height:78%;
+  border:0;
+  padding:0;
+  background:transparent;
+  cursor:pointer;
+  z-index:4;
+  appearance:none;
+  outline:none;
+}
+.tree-hotspot:focus-visible{
+  box-shadow:0 0 0 3px rgba(70,95,70,.28);
+  border-radius:35%;
+}
+.orangutan-return{
+  position:absolute;
+  left:calc(50% + 242px);
+  right:auto;
+  bottom:4%;
+  width:180px;
+  height:210px;
+  opacity:0;
+  pointer-events:none;
+  z-index:1;
+}
+.orangutan-return img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+  filter:drop-shadow(0 10px 10px rgba(35,45,30,.13));
+}
+.orangutan-return.show{
+  animation:orangutanReturn 1.15s cubic-bezier(.2,.85,.2,1) both;
+}
+@keyframes orangutanReturn{
+  0%{opacity:0;transform:translate(-115px,18px) scale(.45) rotate(12deg)}
+  45%{opacity:0;transform:translate(-55px,4px) scale(.72) rotate(6deg)}
+  72%{opacity:1;transform:translate(-12px,-6px) scale(1.04) rotate(-2deg)}
+  100%{opacity:1;transform:translate(0,0) scale(1) rotate(0)}
+}
+.tree-quote{
+  margin:1.1rem auto 0;
+  max-width:720px;
+  font-family:"Caveat",cursive;
+  font-size:clamp(1.7rem,3vw,2.5rem);
+  line-height:1.05;
+  color:#4d5945;
+  opacity:.9;
+}
+
+@media(max-width:700px){
+  .dino-hotspot{right:5%;bottom:5%;width:23%;min-width:75px}
+  .dino-hotspot.big img{transform:scale(1.65) translate(-5%,-5%)}
+  .orangutan-hotspot{left:0;bottom:2%;width:115px;height:145px}
+  .fish-hotspot{left:69%;bottom:17%;width:82px;height:62px}
+  .fish-return{left:69%;bottom:17%;width:82px;height:62px}
+  .orangutan-return{left:calc(50% + 18vw);right:auto;width:125px;height:155px}
+  .tree-hotspot{left:15%;width:65%}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .dino-hotspot img,.orangutan-hotspot,.fish-hotspot,.fish-return,.orangutan-return{animation:none!important;transition:none!important}
+}

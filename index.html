@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Little Art, A Little You</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Fixed atmosphere. JavaScript crossfades these layers continuously while scrolling. -->
+<div class="world" aria-hidden="true">
+  <div class="atmo atmo-night"></div>
+  <div class="atmo atmo-morning"></div>
+  <div class="atmo atmo-day"></div>
+  <div class="atmo atmo-windmill"></div>
+  <div class="atmo atmo-sunset"></div>
+  <div class="atmo atmo-tree"></div>
+  <div class="stars"></div>
+  <div class="moon"></div>
+  <div class="sun"></div>
+  <div class="cloud cloud-a"></div>
+  <div class="cloud cloud-b"></div>
+  <div class="warm-glow"></div>
+</div>
+
+<main>
+  <!-- 01 · MALAM -->
+  <section class="story-section scene-night" data-scene="0">
+    <div class="content scene-content">
+      <div class="eyebrow">01 · UNDER THE STARS</div>
+      <h1>A little art,<br><em>a little bit of you.</em></h1>
+      <p class="intro">
+        A little art<br>
+        Under a sky full of stars,<br>
+        maybe the night was made<br>
+        for little stories with random things ..
+      </p>
+
+      <div class="camp-scene art-stage">
+        <img src="assets/tenda-malam.webp" alt="Hand-drawn campsite under the stars" width="1536" height="885" fetchpriority="high" decoding="async">
+        <button class="dino-hotspot" type="button" aria-label="Make the dinosaur bigger" aria-pressed="false">
+          <img src="assets/dinosaurus.webp" alt="Cute green dinosaur" width="1369" height="1149" decoding="async">
+        </button>
+        <button class="fire-hotspot" type="button" aria-label="Light the campfire" aria-pressed="false">
+          <span class="fire-glow"></span>
+          <span class="flame flame-a"></span>
+          <span class="flame flame-b"></span>
+          <span class="ember ember-1"></span>
+          <span class="ember ember-2"></span>
+          <span class="ember ember-3"></span>
+          <span class="ember ember-4"></span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 · AGAK PAGI -->
+  <section class="story-section scene-morning" data-scene="1">
+    <div class="content morning-content scene-content">
+      <div class="eyebrow morning-eyebrow">02 · A LITTLE MORNING</div>
+      <h2>Slowly, slowly,<br><em>morning finds us.</em></h2>
+      <p class="morning-intro">The mist is still hanging around,<br>but the world is waking up.</p>
+
+      <div class="mountain-scene art-stage">
+        <img class="mountain-art" src="assets/gunung.webp" alt="Hand-drawn mountain landscape" width="612" height="408" loading="lazy" decoding="async">
+        <button class="bird-hotspot" type="button" aria-label="Say hello to the bird" aria-pressed="false">
+          <img src="assets/burung.webp" alt="Cute green bird" width="612" height="408" loading="lazy" decoding="async">
+        </button>
+        <div class="bird-sound" aria-live="polite">
+          <span>citt</span><span>citt</span><span>~</span>
+        </div>
+        <button class="orangutan-hotspot" type="button" aria-label="Watch the orangutan run away">
+          <img class="orangutan-art" src="assets/orangutan.webp" alt="Cute hand-drawn orangutan" width="1328" height="1184" loading="lazy" decoding="async">
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 · LAUT -->
+  <section class="story-section scene-sea" data-scene="2">
+    <div class="content sea-content scene-content">
+      <div class="eyebrow">03 · BY THE SEA</div>
+      <h2>The breeze carries<br><em>a little story to the shore.</em></h2>
+      <p class="scene-copy">Clouds drift slowly,<br>while the lighthouse keeps watch.</p>
+      <div class="sea-stage art-stage">
+        <img src="assets/mercusuar.webp" alt="Hand-drawn lighthouse by the sea" width="1536" height="1024" loading="lazy" decoding="async">
+        <button class="fish-hotspot" type="button" aria-label="Let the pufferfish dive">
+          <img src="assets/ikan.webp" alt="Cute pufferfish" width="1497" height="1051" loading="lazy" decoding="async">
+        </button>
+        <button class="sea-hotspot" type="button" aria-label="Call the pufferfish back">
+          <span>🌊</span>
+        </button>
+        <button class="fish-return" type="button" aria-label="Let the pufferfish dive again">
+          <img src="assets/ikan.webp" alt="" width="1497" height="1051" loading="lazy" decoding="async">
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 · KINCIR -->
+  <section class="story-section scene-windmill" data-scene="3">
+    <div class="content windmill-content scene-content">
+      <div class="eyebrow">04 · A SUNNY AFTERNOON</div>
+      <h2>A light little day,<br><em>like a song in the breeze.</em></h2>
+      <p class="scene-copy">The windmill turns,<br>and little leaves dance down.</p>
+      <div class="windmill-stage art-stage">
+        <img class="windmill-art" src="assets/windmill.webp" alt="Hand-drawn windmill" width="1536" height="1024" loading="lazy" decoding="async">
+        <img class="children-art" src="assets/child.webp" alt="Hand-drawn children" width="1536" height="512" loading="lazy" decoding="async">
+        <img class="falling-leaf leaf-1" src="assets/daun.webp" alt="" width="1263" height="1245" loading="lazy" decoding="async">
+        <img class="falling-leaf leaf-2" src="assets/daun.webp" alt="" width="1263" height="1245" loading="lazy" decoding="async">
+        <img class="falling-leaf leaf-3" src="assets/daun.webp" alt="" width="1263" height="1245" loading="lazy" decoding="async">
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 · SENJA -->
+  <section class="story-section scene-sunset" data-scene="4">
+    <div class="content sunset-content scene-content">
+      <div class="eyebrow">05 · GOLDEN HOUR</div>
+      <h2>And evening gently<br><em>finds its way home.</em></h2>
+      <p class="scene-copy">The light turns warm,<br>saving one last color for the sky.</p>
+      <div class="sunset-stage art-stage">
+        <img src="assets/warung.webp" alt="Hand-drawn little house at sunset" width="1536" height="1024" loading="lazy" decoding="async">
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 · POHON -->
+  <section class="story-section scene-tree" data-scene="5">
+    <div class="content tree-content scene-content">
+      <div class="eyebrow">06 · SOMETHING THAT GROWS</div>
+      <h2>Some things<br><em>are worth growing.</em></h2>
+      <p class="scene-copy">Quietly, patiently,<br>and a little bit beautifully.</p>
+      <div class="tree-stage art-stage">
+        <img src="assets/pohon.webp" alt="Hand-drawn tree" width="1159" height="1356" loading="lazy" decoding="async">
+        <button class="tree-hotspot" type="button" aria-label="Bring the orangutan back"></button>
+        <div class="orangutan-return" aria-hidden="true">
+          <img src="assets/orangutan.webp" alt="" width="1328" height="1184" loading="lazy" decoding="async">
+        </div>
+      </div>
+      <p class="tree-quote">When we plant trees, we plant the<br>seeds of peace a seeds of hope</p>
+    </div>
+  </section>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
