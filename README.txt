@@ -1,19 +1,21 @@
 A Little Art, A Little You
-==========================
+
+Static HTML/CSS/JS story website.
 
 Run locally:
-1. Extract this ZIP.
-2. Open index.html directly in Windows/Chrome.
-3. Scroll through the six scenes.
+1. Open index.html in a browser.
+2. Scroll through the six scenes.
+3. Tap/click the interactive drawings.
 
-Assets are kept in assets/.
-Interactions:
-- Slide 1: click the campfire to animate it; click the dinosaur to grow/shrink it.
-- Slide 2: click the bird for a peck + "citt citt"; click the orangutan to make it run away.
-- Slide 3: click the pufferfish to dive; then click the sea to make it surface somewhere else.
-- Slide 6: click the tree to bring the orangutan back.
+Interactive scenes:
+- Swiper steals the ice cream, then runs away.
+- Sheep says "Mbek punteen".
+- Crab walks vertically.
+- Windmill blades spin clockwise and stop on the next click.
+- Café cat calls the other animals with "come~".
+- Orangutan returns beside the tree with a thank-you message.
 
-The background is one continuous, smooth crossfade:
-night -> morning -> sea/day -> windmill/day -> sunset -> tree.
-The moon sets during the first transition and stays gone for the rest of the story.
-No Docker or Python is required to preview the site.
+All PNG assets were converted to WebP for lighter delivery.
+
+
+Final fix: Slide 4 restores the complete windmill artwork, the children, and three falling leaves. Other scenes are left unchanged.

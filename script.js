@@ -14,21 +14,23 @@ const warmGlow = document.querySelector('.warm-glow');
 const clouds = [...document.querySelectorAll('.cloud')];
 
 const fire = document.querySelector('.fire-hotspot');
-const dino = document.querySelector('.dino-hotspot');
+const swiper = document.querySelector('.swiper-hotspot');
 
 const bird = document.querySelector('.bird-hotspot');
 const birdSound = document.querySelector('.bird-sound');
+const sheep = document.querySelector('.sheep-hotspot');
 
-const orangutan = document.querySelector('.orangutan-hotspot');
 
-const fish = document.querySelector('.fish-hotspot');
-const seaHotspot = document.querySelector('.sea-hotspot');
+const crab = document.querySelector('.crab-hotspot');
+
+
+const cafeCat = document.querySelector('.cafe-cat-hotspot');
+const cafeFriends = document.querySelector('.cafe-friends');
 
 const treeHotspot = document.querySelector('.tree-hotspot');
 const returningOrangutan = document.querySelector('.orangutan-return');
 
 const clamp = (v,a=0,b=1) => Math.max(a, Math.min(b,v));
-const smooth = t => t*t*(3-2*t);
 const smoother = t => t*t*t*(t*(t*6-15)+10);
 
 let target = 0;
@@ -54,18 +56,15 @@ function updateAtmosphere(){
     if(layer) layer.style.opacity = sceneBlend(p,i);
   });
 
-  // Stars belong to the opening night only.
   const starAlpha = smoother(clamp(1 - p / 0.19)) * .95;
   if(stars) stars.style.opacity = starAlpha;
 
-  // The moon sets once during the first transition and never comes back.
   const moonAlpha = smoother(clamp(1 - p / 0.18));
   if(moon){
     moon.style.opacity = moonAlpha;
     moon.style.transform = `translateY(${p * 24}px)`;
   }
 
-  // Sun gently arrives in the morning and glows again near sunset.
   const morningSun = clamp((p - 0.15) / 0.22);
   const sunsetSun = clamp(1 - Math.abs(p - 0.80) / 0.18);
   const sunAlpha = Math.max(
@@ -120,15 +119,28 @@ if(fire){
   });
 }
 
-/* 01 · Dinosaur: first click big, second click small again. */
-if(dino){
-  dino.addEventListener('click',()=>{
-    const big = dino.classList.toggle('big');
-    dino.setAttribute('aria-pressed',String(big));
-    dino.setAttribute(
-      'aria-label',
-      big ? 'Make the dinosaur small again' : 'Make the dinosaur bigger'
-    );
+/* 01 · Swiper: first click steals the ice cream, second click runs away. */
+if(swiper){
+  swiper.addEventListener('click',()=>{
+    if(swiper.classList.contains('running')) return;
+
+    if(!swiper.classList.contains('stealing')){
+      swiper.classList.add('stealing');
+      swiper.setAttribute('aria-pressed','true');
+      swiper.setAttribute('aria-label','Swiper stole the ice cream. Click again to watch him run away');
+      return;
+    }
+
+    swiper.classList.remove('stealing');
+    void swiper.offsetWidth;
+    swiper.classList.add('running');
+    swiper.setAttribute('aria-label','Swiper is running away');
+
+    window.setTimeout(()=>{
+      swiper.classList.remove('stealing','running');
+      swiper.setAttribute('aria-pressed','false');
+      swiper.setAttribute('aria-label','Watch Swiper steal the ice cream');
+    },1350);
   });
 }
 
@@ -136,62 +148,49 @@ if(dino){
 if(bird){
   bird.addEventListener('click',()=>{
     bird.classList.remove('peck');
-    birdSound.classList.remove('show');
+    if(birdSound) birdSound.classList.remove('show');
     void bird.offsetWidth;
-    void birdSound.offsetWidth;
+    if(birdSound) void birdSound.offsetWidth;
     bird.classList.add('peck');
-    birdSound.classList.add('show');
+    if(birdSound) birdSound.classList.add('show');
     setTimeout(()=>bird.classList.remove('peck'),800);
-    setTimeout(()=>birdSound.classList.remove('show'),1000);
+    setTimeout(()=>birdSound && birdSound.classList.remove('show'),1000);
   });
 }
 
-/* 02 · Orangutan runs away to the left. */
-if(orangutan){
-  orangutan.addEventListener('click',()=>{
-    if(orangutan.classList.contains('running')) return;
-    orangutan.classList.add('running');
-    orangutan.setAttribute('aria-pressed','true');
+/* 02 · Garut sheep. */
+if(sheep){
+  sheep.addEventListener('click',()=>{
+    sheep.classList.remove('say');
+    void sheep.offsetWidth;
+    sheep.classList.add('say');
   });
 }
 
-/* 03 · Fish dives away from below the boat. */
-if(fish && seaHotspot){
-  const returnFish = document.querySelector('.fish-return');
 
-  const diveFish = (el)=>{
-    if(!el || el.classList.contains('diving')) return;
-    el.classList.remove('show');
-    void el.offsetWidth;
-    el.classList.add('diving');
-    seaHotspot.classList.add('ready');
-  };
-
-  fish.addEventListener('click',()=>{
-    diveFish(fish);
-    fish.setAttribute('aria-label','The pufferfish is diving');
+/* 03 · Crab walks vertically. */
+if(crab){
+  crab.addEventListener('click',()=>{
+    const walking = crab.classList.toggle('walking');
+    crab.setAttribute('aria-pressed',String(walking));
+    crab.setAttribute(
+      'aria-label',
+      walking ? 'Stop the crab' : 'Make the crab walk vertically'
+    );
   });
-
-  /* Click the sea after the fish has disappeared: it surfaces at the same safe spot. */
-  seaHotspot.addEventListener('click',()=>{
-    if(!seaHotspot.classList.contains('ready') || !returnFish) return;
-
-    seaHotspot.classList.remove('ready');
-    returnFish.classList.remove('diving','show');
-    void returnFish.offsetWidth;
-    returnFish.classList.add('show');
-  });
-
-  /* The surfaced fish can be clicked again to dive back down. */
-  if(returnFish){
-    returnFish.addEventListener('click',()=>{
-      diveFish(returnFish);
-      returnFish.setAttribute('aria-label','The pufferfish is diving again');
-    });
-  }
 }
 
-/* 06 · Click the tree to bring the orangutan back. */
+/* 05 · Cat in the café window calls the other animals. */
+if(cafeCat && cafeFriends){
+  cafeCat.addEventListener('click',()=>{
+    cafeFriends.classList.remove('show');
+    void cafeFriends.offsetWidth;
+    cafeFriends.classList.add('show');
+    cafeCat.setAttribute('aria-pressed','true');
+  });
+}
+
+/* 06 · Tree brings the orangutan back beside it with a thank-you message. */
 if(treeHotspot && returningOrangutan){
   treeHotspot.addEventListener('click',()=>{
     returningOrangutan.classList.remove('show');

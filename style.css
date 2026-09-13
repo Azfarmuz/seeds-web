@@ -713,3 +713,831 @@ h1 em,h2 em{font-weight:400}
 @media(prefers-reduced-motion:reduce){
   .dino-hotspot img,.orangutan-hotspot,.fish-hotspot,.fish-return,.orangutan-return{animation:none!important;transition:none!important}
 }
+
+/* Final quote author */
+.quote-author{
+  display:block;
+  margin-top:.45rem;
+  font-family:"DM Sans",sans-serif;
+  font-size:clamp(.72rem,1.5vw,.9rem);
+  letter-spacing:.12em;
+  font-style:normal;
+  opacity:.65;
+}
+
+
+/* =========================
+   FINAL INTERACTIVE PASS
+   ========================= */
+
+/* 01 · Swiper steals the ice cream, then runs away. */
+.swiper-hotspot{
+  position:absolute;
+  right:5%;
+  bottom:4%;
+  width:18%;
+  min-width:110px;
+  max-width:205px;
+  aspect-ratio:1.5/1;
+  padding:0;
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  appearance:none;
+  outline:none;
+  z-index:6;
+  -webkit-tap-highlight-color:transparent;
+}
+.swiper-hotspot img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+  filter:drop-shadow(0 10px 9px rgba(20,35,20,.18));
+  transform-origin:65% 88%;
+  transition:transform .7s cubic-bezier(.22,1,.36,1);
+}
+.swiper-hotspot:hover img{transform:translateY(-3px) rotate(-1deg)}
+.swiper-hotspot.stealing img{
+  animation:swiperSteal 1s cubic-bezier(.22,1,.36,1) forwards;
+}
+.swiper-hotspot.running{
+  pointer-events:none;
+  animation:swiperRun 1.25s cubic-bezier(.55,.05,.9,.35) forwards;
+}
+@keyframes swiperSteal{
+  0%{transform:translate(0,0) rotate(0) scale(1)}
+  42%{transform:translate(-16%,-4%) rotate(-5deg) scale(1.04)}
+  72%{transform:translate(-31%,8%) rotate(4deg) scale(.98)}
+  100%{transform:translate(-26%,4%) rotate(1deg) scale(1)}
+}
+@keyframes swiperRun{
+  0%{transform:translateX(0) rotate(0) scale(1)}
+  30%{transform:translateX(10vw) translateY(-2vh) rotate(6deg) scale(1.02)}
+  100%{transform:translateX(125vw) translateY(-7vh) rotate(18deg) scale(.72);opacity:0}
+}
+.ice-cream-target{
+  position:absolute;
+  right:24%;
+  bottom:18%;
+  z-index:4;
+  font-size:clamp(1.5rem,3vw,2.5rem);
+  filter:drop-shadow(0 5px 4px rgba(30,25,15,.15));
+  transform:rotate(-7deg);
+  transition:opacity .35s ease,transform .35s ease;
+}
+.swiper-hotspot.stealing ~ .ice-cream-target{
+  opacity:.25;
+  transform:translate(-7px,5px) rotate(-12deg) scale(.9);
+}
+
+/* 02 · Sheep on the green ground. */
+.sheep-hotspot{
+  position:absolute;
+  left:8%;
+  bottom:4%;
+  width:145px;
+  height:105px;
+  padding:0;
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  appearance:none;
+  outline:none;
+  z-index:4;
+  -webkit-tap-highlight-color:transparent;
+}
+.sheep-hotspot img{
+  width:100%;height:100%;
+  object-fit:contain;display:block;
+  filter:drop-shadow(0 8px 8px rgba(30,45,25,.13));
+  transform-origin:50% 100%;
+}
+.sheep-hotspot span{
+  position:absolute;
+  left:50%;
+  top:-15%;
+  white-space:nowrap;
+  font-family:"Caveat",cursive;
+  font-size:1.65rem;
+  color:#465044;
+  opacity:0;
+  transform:translate(-50%,8px) rotate(-4deg) scale(.85);
+  pointer-events:none;
+}
+.sheep-hotspot.say img{animation:sheepBounce .65s ease-in-out}
+.sheep-hotspot.say span{animation:sheepSay 1.15s ease-out both}
+@keyframes sheepBounce{
+  0%,100%{transform:translateY(0) rotate(0)}
+  35%{transform:translateY(-8px) rotate(-2deg)}
+  65%{transform:translateY(1px) rotate(2deg)}
+}
+@keyframes sheepSay{
+  0%{opacity:0;transform:translate(-50%,8px) rotate(-4deg) scale(.85)}
+  18%{opacity:1}
+  72%{opacity:1;transform:translate(-50%,-8px) rotate(2deg) scale(1)}
+  100%{opacity:0;transform:translate(-50%,-25px) rotate(4deg) scale(.96)}
+}
+
+/* 03 · Crab walking vertically. */
+.crab-hotspot{
+  position:absolute;
+  left:13%;
+  bottom:8%;
+  width:125px;
+  height:90px;
+  padding:0;
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  appearance:none;
+  outline:none;
+  z-index:4;
+  -webkit-tap-highlight-color:transparent;
+}
+.crab-hotspot img{
+  width:100%;height:100%;
+  object-fit:contain;display:block;
+  filter:drop-shadow(0 8px 8px rgba(35,60,65,.16));
+}
+.crab-hotspot.walking{
+  animation:crabVerticalWalk 2.6s ease-in-out infinite;
+}
+.crab-hotspot.walking img{
+  animation:crabWiggle .42s ease-in-out infinite alternate;
+}
+@keyframes crabVerticalWalk{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-135px)}
+}
+@keyframes crabWiggle{
+  from{transform:rotate(-3deg)}
+  to{transform:rotate(3deg)}
+}
+
+/* 04 · Mill + independent blades. */
+.windmill-composite{
+  position:relative;
+  width:min(850px,86vw);
+  aspect-ratio:1536/1024;
+  flex:0 0 auto;
+}
+.mill-art{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+  filter:drop-shadow(0 20px 22px rgba(50,45,40,.12));
+  animation:windmillFloat 8s ease-in-out infinite;
+}
+.wind-hotspot{
+  position:absolute;
+  left:37%;
+  top:-13%;
+  width:68%;
+  aspect-ratio:1320/1191;
+  transform:translateX(-50%);
+  padding:0;
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  appearance:none;
+  outline:none;
+  z-index:3;
+  -webkit-tap-highlight-color:transparent;
+}
+.wind-hotspot img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+  transform-origin:50% 50%;
+  filter:drop-shadow(0 8px 7px rgba(50,35,45,.12));
+}
+.wind-hotspot.spinning img{
+  animation:windSpin 2.2s linear infinite;
+}
+@keyframes windSpin{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+.push-hint{
+  position:absolute;
+  z-index:5;
+  left:50%;
+  top:2%;
+  transform:translateX(-50%);
+  font-family:"Caveat",cursive;
+  font-size:1.35rem;
+  color:#4e5147;
+  opacity:.62;
+  pointer-events:none;
+  transition:opacity .2s ease;
+}
+.push-hint.hidden{opacity:0}
+
+/* 05 · Café cat calls the animal friends. */
+.cafe-cat-hotspot{
+  position:absolute;
+  left:16%;
+  top:35%;
+  width:28%;
+  height:35%;
+  padding:0;
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  appearance:none;
+  outline:none;
+  z-index:5;
+  -webkit-tap-highlight-color:transparent;
+}
+.cafe-cat-hotspot:focus-visible{
+  box-shadow:0 0 0 3px rgba(70,95,70,.3);
+  border-radius:20%;
+}
+.cafe-friends{
+  position:absolute;
+  left:7%;
+  bottom:6%;
+  display:flex;
+  align-items:flex-end;
+  gap:clamp(3px,1vw,12px);
+  opacity:0;
+  pointer-events:none;
+  z-index:6;
+}
+.cafe-friends img{
+  width:clamp(68px,8vw,112px);
+  height:clamp(76px,9vw,126px);
+  object-fit:contain;
+  filter:drop-shadow(0 8px 8px rgba(45,40,30,.14));
+}
+.cafe-friends .come-text{
+  position:absolute;
+  left:50%;
+  top:-42px;
+  font-family:"Caveat",cursive;
+  font-size:clamp(1.6rem,3vw,2.5rem);
+  color:#4a5045;
+  transform:translateX(-50%) rotate(-5deg);
+}
+.cafe-friends.show{
+  opacity:1;
+  animation:friendsArrive .8s cubic-bezier(.2,.85,.2,1) both;
+}
+.cafe-friends.show img:nth-of-type(1){animation:friendPop .55s .05s both}
+.cafe-friends.show img:nth-of-type(2){animation:friendPop .55s .16s both}
+.cafe-friends.show img:nth-of-type(3){animation:friendPop .55s .27s both}
+@keyframes friendsArrive{
+  from{transform:translateY(25px)}
+  to{transform:translateY(0)}
+}
+@keyframes friendPop{
+  from{opacity:0;transform:translateY(20px) scale(.7) rotate(-5deg)}
+  to{opacity:1;transform:translateY(0) scale(1) rotate(0)}
+}
+
+/* 06 · Orangutan appears close to the tree and speaks. */
+.tree-art{
+  width:min(500px,52vw);
+  max-height:68vh;
+  object-fit:contain;
+  display:block;
+  filter:drop-shadow(0 24px 25px rgba(50,55,35,.16));
+  animation:treeSway 8s ease-in-out infinite;
+  transform-origin:50% 100%;
+  position:relative;
+  z-index:2;
+}
+.orangutan-return{
+  position:absolute;
+  left:58%;
+  bottom:4%;
+  width:175px;
+  height:205px;
+  opacity:0;
+  pointer-events:none;
+  z-index:3;
+}
+.orangutan-return img{
+  width:100%;height:100%;
+  object-fit:contain;display:block;
+  filter:drop-shadow(0 10px 10px rgba(35,45,30,.13));
+}
+.orangutan-return.show{
+  pointer-events:auto;
+  animation:orangutanReturn 1.15s cubic-bezier(.2,.85,.2,1) both;
+}
+.orangutan-message{
+  position:absolute;
+  left:70%;
+  bottom:66%;
+  width:min(320px,36vw);
+  padding:.7rem .9rem;
+  border-radius:18px 18px 18px 5px;
+  background:rgba(250,247,232,.88);
+  color:#4b5446;
+  font-family:"Caveat",cursive;
+  font-size:clamp(1.25rem,2.2vw,1.85rem);
+  line-height:1.05;
+  text-align:left;
+  box-shadow:0 8px 18px rgba(45,50,35,.10);
+  opacity:0;
+  transform:translate(0,8px) scale(.9) rotate(-2deg);
+}
+.orangutan-return.show .orangutan-message{
+  animation:messagePop .7s .48s ease-out both;
+}
+@keyframes messagePop{
+  from{opacity:0;transform:translate(0,8px) scale(.9) rotate(-2deg)}
+  to{opacity:1;transform:translate(0,0) scale(1) rotate(1deg)}
+}
+
+@media(max-width:700px){
+  .swiper-hotspot{
+    right:2%;
+    bottom:4%;
+    width:24%;
+    min-width:80px;
+  }
+  .ice-cream-target{
+    right:25%;
+    bottom:18%;
+    font-size:1.5rem;
+  }
+  .sheep-hotspot{
+    left:3%;
+    bottom:5%;
+    width:100px;
+    height:78px;
+  }
+  .sheep-hotspot span{font-size:1.25rem}
+  .crab-hotspot{
+    left:8%;
+    bottom:7%;
+    width:85px;
+    height:62px;
+  }
+  @keyframes crabVerticalWalk{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-85px)}
+  }
+  .windmill-composite{
+    width:min(850px,86vw);
+  }
+  .wind-hotspot{left:37%;top:-13%;width:68%}
+  .push-hint{font-size:1.05rem;top:1%}
+  .cafe-cat-hotspot{
+    left:13%;
+    top:36%;
+    width:31%;
+    height:34%;
+  }
+  .cafe-friends{
+    left:2%;
+    bottom:5%;
+    gap:0;
+  }
+  .cafe-friends img{
+    width:23vw;
+    height:26vw;
+  }
+  .cafe-friends .come-text{top:-34px;font-size:1.7rem}
+  .orangutan-return{
+    left:57%;
+    bottom:3%;
+    width:120px;
+    height:145px;
+  }
+  .orangutan-message{
+    left:58%;
+    bottom:74%;
+    width:190px;
+    font-size:1.15rem;
+    padding:.55rem .7rem;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .swiper-hotspot.stealing img,
+  .swiper-hotspot.running,
+  .sheep-hotspot.say img,
+  .sheep-hotspot.say span,
+  .crab-hotspot.walking,
+  .crab-hotspot.walking img,
+  .wind-hotspot.spinning img,
+  .cafe-friends.show,
+  .cafe-friends.show img,
+  .orangutan-return.show,
+  .orangutan-return.show .orangutan-message{
+    animation:none!important;
+  }
+}
+
+
+/* =========================
+   LATEST REVISION
+   ========================= */
+
+/* 01 · Keep the drawn ice cream in the tent scene clean — no emoji overlay. */
+.swiper-hotspot{
+  right:5%;
+  bottom:4%;
+  z-index:8;
+}
+
+/* 02 · Sheep sits farther into the green area on the right. */
+.sheep-hotspot{
+  left:auto;
+  right:7%;
+  bottom:6%;
+  width:150px;
+  height:108px;
+  z-index:8;
+}
+
+/* Decorative scene art must never steal clicks from interactive buttons. */
+.mountain-art,.sea-stage>img,.mill-art,.children-art,.cafe-art,.tree-art,
+.pufferfish-art,.wind-leaf{
+  pointer-events:none;
+}
+
+/* 03 · Pufferfish added to the water. */
+.pufferfish-art{
+  position:absolute;
+  right:20%;
+  bottom:21%;
+  width:105px !important;
+  height:74px !important;
+  object-fit:contain;
+  display:block;
+  z-index:3;
+  filter:drop-shadow(0 8px 8px rgba(35,60,65,.15));
+  animation:pufferBob 3.2s ease-in-out infinite;
+}
+@keyframes pufferBob{
+  0%,100%{transform:translateY(0) rotate(-2deg)}
+  50%{transform:translateY(-7px) rotate(2deg)}
+}
+
+/* 04 · A narrower mill with smaller blades, aligned naturally at the tower top. */
+.windmill-composite{
+  width:min(680px,70vw);
+  aspect-ratio:1536/1024;
+  z-index:2;
+}
+.wind-hotspot{
+  left:50%;
+  top:-6%;
+  width:48%;
+  z-index:4;
+}
+.children-art{
+  left:1%;
+  bottom:7%;
+  width:min(330px,30vw);
+  max-height:145px;
+  z-index:3;
+}
+
+/* 05 · Friends gather directly in front of the café door on the right. */
+.cafe-cat-hotspot{
+  left:34%;
+  top:35%;
+  width:20%;
+  height:32%;
+  z-index:8;
+}
+.cafe-friends{
+  left:auto;
+  right:3%;
+  bottom:4%;
+  z-index:9;
+}
+.cafe-friends .come-text{
+  top:-40px;
+}
+.cafe-friends .come-text::after{
+  content:"";
+}
+
+/* 06 · Orangutan is a little bigger and sits closer to the tree. */
+.orangutan-return{
+  left:calc(50% + 185px);
+  bottom:3%;
+  width:210px;
+  height:240px;
+  z-index:4;
+}
+.orangutan-message{
+  left:68%;
+  bottom:68%;
+  width:min(270px,30vw);
+}
+
+/* Horizontal green leaves blowing through the final scene. */
+.wind-leaf{
+  position:absolute;
+  width:48px !important;
+  height:56px !important;
+  object-fit:contain;
+  opacity:0;
+  z-index:5;
+  pointer-events:none;
+  filter:drop-shadow(0 4px 4px rgba(35,55,30,.10));
+  animation:leafBreeze 7s linear infinite;
+}
+.wind-leaf-1{left:-8%;top:25%;animation-delay:-.5s}
+.wind-leaf-2{left:-12%;top:42%;width:38px !important;height:45px !important;animation-delay:-2.6s}
+.wind-leaf-3{left:-18%;top:58%;width:44px !important;height:52px !important;animation-delay:-4.3s}
+.wind-leaf-4{left:-6%;top:70%;width:34px !important;height:42px !important;animation-delay:-5.7s}
+
+@keyframes leafBreeze{
+  0%{opacity:0;transform:translateX(-20px) translateY(0) rotate(-20deg) scale(.75)}
+  10%{opacity:.72}
+  50%{opacity:.78;transform:translateX(430px) translateY(-18px) rotate(35deg) scale(1)}
+  82%{opacity:.55}
+  100%{opacity:0;transform:translateX(930px) translateY(28px) rotate(100deg) scale(.82)}
+}
+
+/* 07 · Tiny hand-drawn-style music button. */
+.music-control{
+  position:fixed;
+  top:20px;
+  right:22px;
+  z-index:100;
+}
+#musicToggle{
+  width:46px;
+  height:46px;
+  padding:0;
+  border:2px solid rgba(48,47,42,.62);
+  border-radius:50%;
+  background:rgba(244,240,229,.76);
+  color:#3f433a;
+  box-shadow:0 6px 16px rgba(30,30,25,.13);
+  backdrop-filter:blur(5px);
+  cursor:pointer;
+  font-family:"Caveat",cursive;
+  display:grid;
+  place-items:center;
+  transition:transform .2s ease,background .2s ease;
+}
+#musicToggle:hover{transform:rotate(-4deg) scale(1.06)}
+#musicToggle:active{transform:scale(.95)}
+#musicToggle:focus-visible{outline:3px solid rgba(70,95,70,.35);outline-offset:3px}
+.music-icon{
+  font-family:Arial,sans-serif;
+  font-size:.85rem;
+  line-height:1;
+}
+
+/* 08 · All interactive controls remain independently clickable.
+   No scene-wide animation lock is used. */
+button{
+  pointer-events:auto;
+}
+.story-section{
+  isolation:isolate;
+}
+
+@media(max-width:700px){
+  .sheep-hotspot{
+    right:3%;
+    bottom:5%;
+    width:105px;
+    height:80px;
+  }
+  .pufferfish-art{
+    right:17%;
+    bottom:19%;
+    width:78px !important;
+    height:58px !important;
+  }
+  .windmill-composite{
+    width:min(680px,82vw);
+  }
+  .wind-hotspot{
+    left:50%;
+    top:-6%;
+    width:48%;
+  }
+  .children-art{
+    left:0;
+    width:32vw;
+    max-height:115px;
+  }
+  .cafe-cat-hotspot{
+    left:34%;
+    top:36%;
+    width:21%;
+    height:31%;
+  }
+  .cafe-friends{
+    right:1%;
+    bottom:4%;
+  }
+  .orangutan-return{
+    left:calc(50% + 12vw);
+    width:145px;
+    height:170px;
+  }
+  .orangutan-message{
+    left:62%;
+    bottom:73%;
+    width:185px;
+    font-size:1.12rem;
+  }
+  .wind-leaf-1{left:-14%}
+  .wind-leaf-2{left:-20%}
+  .wind-leaf-3{left:-26%}
+  .wind-leaf-4{left:-12%}
+  @keyframes leafBreeze{
+    0%{opacity:0;transform:translateX(-15px) translateY(0) rotate(-20deg) scale(.72)}
+    10%{opacity:.7}
+    50%{opacity:.78;transform:translateX(250px) translateY(-14px) rotate(35deg) scale(.95)}
+    82%{opacity:.5}
+    100%{opacity:0;transform:translateX(620px) translateY(20px) rotate(100deg) scale(.78)}
+  }
+  .music-control{top:14px;right:14px}
+  #musicToggle{width:42px;height:42px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .pufferfish-art,.wind-leaf{animation:none}
+}
+
+/* =========================
+   LATEST REVISION · SIMPLE ART PASS
+   ========================= */
+
+/* 02 · Keep the Garut sheep clearly in the left foreground, on the green field. */
+.sheep-hotspot{
+  left:4%;
+  bottom:6%;
+  width:145px;
+  height:105px;
+  z-index:7;
+}
+
+/* 04 · Use the original complete windmill artwork again. No separated blades. */
+.windmill-stage{
+  position:relative;
+  width:min(1000px,94vw);
+  margin:1vh auto 0;
+  min-height:58vh;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+}
+.windmill-background{
+  width:min(900px,90vw);
+  max-height:63vh;
+  height:auto;
+  object-fit:contain;
+  display:block;
+  filter:drop-shadow(0 22px 26px rgba(50,45,40,.14));
+  animation:windmillFloat 8s ease-in-out infinite;
+}
+
+/* 06 · Small green leaves travel horizontally across the scene. */
+.wind-leaf{
+  position:absolute !important;
+  z-index:5 !important;
+  width:clamp(34px,4vw,58px) !important;
+  height:auto !important;
+  max-height:none !important;
+  object-fit:contain !important;
+  opacity:0;
+  pointer-events:none !important;
+  filter:drop-shadow(0 5px 5px rgba(45,70,35,.12)) !important;
+  animation:none !important;
+}
+.wind-leaf-1{left:8%;top:43%;animation:windLeafAcross 7s linear infinite !important;animation-delay:-1s !important}
+.wind-leaf-2{left:18%;top:55%;animation:windLeafAcross 8s linear infinite !important;animation-delay:-4s !important}
+.wind-leaf-3{left:10%;top:30%;animation:windLeafAcross 9s linear infinite !important;animation-delay:-6s !important}
+.wind-leaf-4{left:28%;top:64%;animation:windLeafAcross 7.5s linear infinite !important;animation-delay:-2.5s !important}
+@keyframes windLeafAcross{
+  0%{opacity:0;transform:translate3d(-40px,8px,0) rotate(-15deg) scale(.72)}
+  10%{opacity:.82}
+  50%{opacity:.9;transform:translate3d(300px,-22px,0) rotate(75deg) scale(1)}
+  88%{opacity:.7}
+  100%{opacity:0;transform:translate3d(720px,8px,0) rotate(155deg) scale(.8)}
+}
+
+@media(max-width:700px){
+  .sheep-hotspot{left:2%;bottom:5%;width:100px;height:78px}
+  .windmill-background{width:min(94vw,900px);max-height:62vh}
+  .wind-leaf{width:34px !important}
+  @keyframes windLeafAcross{
+    0%{opacity:0;transform:translate3d(-30px,5px,0) rotate(-15deg) scale(.72)}
+    10%{opacity:.82}
+    50%{opacity:.9;transform:translate3d(180px,-16px,0) rotate(75deg) scale(1)}
+    88%{opacity:.7}
+    100%{opacity:0;transform:translate3d(420px,5px,0) rotate(155deg) scale(.8)}
+  }
+}
+
+
+/* =========================================================
+   FINAL FIX — SLIDE 4 WINDMILL COMPOSITION
+   Restores the complete windmill + children + 3 falling leaves.
+   No other scene is changed by this block.
+   ========================================================= */
+.scene-windmill .windmill-stage{
+  position:relative;
+  width:min(1050px,96vw);
+  margin:1vh auto 0;
+  min-height:60vh;
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  overflow:visible;
+}
+
+.scene-windmill .windmill-art{
+  width:min(850px,86vw);
+  max-height:62vh;
+  height:auto;
+  object-fit:contain;
+  display:block;
+  position:relative;
+  z-index:2;
+  filter:drop-shadow(0 20px 22px rgba(50,45,40,.12));
+  animation:windmillFloat 8s ease-in-out infinite;
+}
+
+.scene-windmill .children-art{
+  position:absolute;
+  left:7%;
+  bottom:7%;
+  width:min(500px,46vw);
+  max-height:180px;
+  height:auto;
+  object-fit:contain;
+  display:block;
+  z-index:3;
+  filter:drop-shadow(0 10px 10px rgba(50,45,40,.10));
+  animation:none;
+}
+
+.scene-windmill .falling-leaf{
+  position:absolute;
+  width:52px;
+  height:52px;
+  object-fit:contain;
+  opacity:.82;
+  pointer-events:none;
+  z-index:4;
+  animation:leafFall 6s linear infinite;
+}
+
+.scene-windmill .leaf-1{
+  left:15%;
+  top:8%;
+  width:52px;
+  height:52px;
+  animation-delay:-1s;
+}
+.scene-windmill .leaf-2{
+  right:14%;
+  top:4%;
+  width:42px;
+  height:42px;
+  animation-delay:-3.4s;
+}
+.scene-windmill .leaf-3{
+  right:28%;
+  top:17%;
+  width:36px;
+  height:36px;
+  animation-delay:-5s;
+}
+
+@media(max-width:700px){
+  .scene-windmill .windmill-art{
+    width:min(94vw,900px);
+    max-height:62vh;
+  }
+  .scene-windmill .children-art{
+    left:2%;
+    bottom:5%;
+    width:52vw;
+    max-height:150px;
+  }
+  .scene-windmill .falling-leaf{
+    width:36px;
+    height:36px;
+  }
+  .scene-windmill .leaf-2{
+    width:32px;
+    height:32px;
+  }
+  .scene-windmill .leaf-3{
+    width:28px;
+    height:28px;
+  }
+}
