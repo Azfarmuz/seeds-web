@@ -1033,7 +1033,7 @@ h1 em,h2 em{font-weight:400}
 }
 .orangutan-message{
   position:absolute;
-  left:70%;
+  left:50%;
   bottom:66%;
   width:min(320px,36vw);
   padding:.7rem .9rem;
